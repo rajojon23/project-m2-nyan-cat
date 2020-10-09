@@ -1,5 +1,5 @@
 // This class is not used in the project yet.
-class Text {
+class TextNode {
   // The constructor has three parameters. Here is an example of how you would create
   // an instance of this class
   constructor(root, xPos, yPos) {

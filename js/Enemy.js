@@ -46,6 +46,11 @@ class Enemy {
     // Show that the user can actually see the img DOM node, we append it to the root DOM node.
     theRoot.appendChild(this.domElement);
     this.speed = Math.random() / 2 + 0.25;
+    //this.speed = 0.1;//changing speed - for debug only
+
+
+
+    this.animate();
   }
 
   // We set the speed property of the enemy. This determines how fast it moves down the screen.
@@ -63,9 +68,51 @@ class Enemy {
     // of the screen and should be removed. We remove the DOM element from the root DOM element and we set
     // the destroyed property to indicate that the enemy should no longer be in play
     if (this.y > GAME_HEIGHT) {
+
+      
       this.root.removeChild(this.domElement);
 
       this.destroyed = true;
+    }
+  }
+
+  render(index){
+   
+    switch(index){
+      case 0:
+        this.domElement.src = './images/enemy.png';
+        return;
+      case 1:
+        this.domElement.src = './images/enemy2.png';
+        return;      
+      default:
+        return;
+
+    }
+    
+  }
+
+  animate(){
+    
+    
+    THE_INDEX = (THE_INDEX == 1) ? 0 : 1;
+
+    let destroy = this.destroyed;
+    let y = this.y;
+    let theEnemy = this; 
+    let anim = setInterval(function(){
+      
+      clearAnim(y, GAME_HEIGHT, theEnemy);
+
+    },1000);
+
+    function clearAnim(y, height, theEnemy){
+
+        theEnemy.render(THE_INDEX);
+       
+      if(y < height){//stop the animation when the enemy object is dead
+        clearInterval(anim);
+      }
     }
   }
 }

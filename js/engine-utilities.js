@@ -64,3 +64,36 @@ const addBackground = (root) => {
   whiteBox.style.background = '#fff';
   root.append(whiteBox);
 };
+
+
+const showEndBackground = (root) => {
+  // We create a new img DOM node.
+  const bg = document.createElement('img');
+
+  // We set its src attribute and the height and width CSS attributes
+  bg.src = 'images/gameover_bg.png';
+  bg.backgroundColor = '#ffb55a';
+  bg.style.height = `${GAME_HEIGHT}px`;
+  bg.style.width = `${GAME_WIDTH}px`;
+  bg.style.position = 'absolute';
+  bg.style.left = '10px';
+
+
+
+  // We add it to the root DOM node
+  root.append(bg);
+
+  // We don't want the enemies to go beyond the lower edge of the image
+  // so we place a white div to hide the enemies after they reach the bottom.
+  // To see what it does, you can comment out all the remaining lines in the function to see the effect.
+  const whiteBox = document.createElement('div');
+
+  // We put a high z-index so that the div is placed over all other DOM nodes
+  whiteBox.style.zIndex = 100;
+  whiteBox.style.position = 'absolute';
+  whiteBox.style.top = `${GAME_HEIGHT}px`;
+  whiteBox.style.height = `${ENEMY_HEIGHT}px`;
+  whiteBox.style.width = `${GAME_WIDTH}px`;
+  whiteBox.style.background = '#fff';
+  root.append(whiteBox);
+};

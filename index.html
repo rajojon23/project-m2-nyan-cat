@@ -1,14 +1,24 @@
 <html>
   <head>
     <title>Nyan Kat</title>
+
   </head>
   <body>
     <div id="app"></div>
+        <button style="position: absolute; " class="restart">RESTART</button>
+
+<!--         <iframe src="./sounds/main.wav" allow="autoplay" id="audio" style="display: none"></iframe> -->
+        <audio  class="main_audio" src="./sounds/main.wav" autoplay ></audio>
+        <audio  class="col_audio" src="./sounds/collision.wav" autoplay ></audio>
+        <audio  class="over_audio" src="./sounds/game_over.wav" autoplay ></audio>
+        <audio  class="move_audio" src="./sounds/move.wav" autoplay ></audio>
+    <script src="js/Text.js"></script>
     <script src="js/data.js"></script>
     <script src="js/Enemy.js"></script>
     <script src="js/engine-utilities.js"></script>
     <script src="js/Engine.js"></script>
     <script src="js/Player.js"></script>
     <script src="js/main.js"></script>
+
   </body>
 </html>

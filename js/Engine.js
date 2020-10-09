@@ -14,6 +14,36 @@ class Engine {
     // Initially, we have no enemies in the game. The enemies property refers to an array
     // that contains instances of the Enemy class
     this.enemies = [];
+
+    this.score = 0;
+    this.scoreText = new TextNode(this.root, 30, 40);
+    this.scoreText.update(this.score);
+
+
+    this.restart = document.querySelector(".restart");
+
+    this.restart.style.left = "150px";
+    this.restart.style.top = "350px";
+    this.restart.style.border = "none";
+    this.restart.style.padding = "10px 15px 10px 15px";
+    this.restart.style.backgroundColor = "#F22B0C";
+    this.restart.style.color = "#fff";
+    this.restart.style.borderRadius = "10px";
+    this.restart.style.fontWeight = "bold";
+    this.restart.style.display = "none";
+    this.restart.style.cursor = "pointer";
+
+
+    this.main_sound = document.querySelector(".main_audio");
+    this.col_sound = document.querySelector(".col_audio");
+    this.over_sound = document.querySelector(".over_audio");
+
+
+
+
+
+    //this.testText.update("test");
+
     // We add the background image to the game
     addBackground(this.root);
   }
@@ -23,6 +53,8 @@ class Engine {
   //  - Detects a collision between the player and any enemy
   //  - Removes enemies that are too low from the enemies array
   gameLoop = () => {
+   
+
     // This code is to see how much time, in milliseconds, has elapsed since the last
     // time this method was called.
     // (new Date).getTime() evaluates to the number of milliseconds since January 1st, 1970 at midnight.
@@ -37,6 +69,8 @@ class Engine {
     // Furthermore, if any enemy is below the bottom of our game, its destroyed property will be set. (See Enemy.js)
     this.enemies.forEach((enemy) => {
       enemy.update(timeDiff);
+
+      // enemy.animate();
     });
 
     // We remove all the destroyed enemies from the array referred to by \`this.enemies\`.
@@ -57,17 +91,97 @@ class Engine {
     // We check if the player is dead. If he is, we alert the user
     // and return from the method (Why is the return statement important?)
     if (this.isPlayerDead()) {
-      window.alert('Game over');
+      // window.alert('Game over');
+      showEndBackground(this.root);
+      this.displayRestart();
+      this.restart.style.display = "block";
+
+      this.enemies.forEach((enemy) => {
+        enemy.domElement.style.display = "none";
+        this.player.domElement.style.display = "none";
+      });
+
+      this.main_sound.pause();
+      
+      //play fallback for chrome, to prevent error on console
+      let promise = this.over_sound.play();
+
+        if (promise !== undefined) {
+          promise.then(_ => {
+            // Autoplay started!
+          }).catch(error => {
+            // Autoplay was prevented
+            console.log("autoplay prevented");
+          });
+        }
+
+
       return;
     }
 
+   
+
     // If the player is not dead, then we put a setTimeout to run the gameLoop in 20 milliseconds
     setTimeout(this.gameLoop, 20);
+    // setTimeout(this.gameLoop, 50);
   };
 
   // This method is not implemented correctly, which is why
   // the burger never dies. In your exercises you will fix this method.
-  isPlayerDead = () => {
-    return false;
+   isPlayerDead = () => {
+    // console.log("check player dead");
+
+    let dead = false;
+    this.enemies.forEach((enemy) => {
+
+
+      let player_posy = GAME_HEIGHT - PLAYER_HEIGHT - 10;
+      let enemy_posy = enemy.y+ENEMY_HEIGHT;
+
+      //if collision is detected 
+      if (enemy.x == this.player.x && enemy_posy >= player_posy) {
+        dead=true;
+
+
+        
+
+        let promise = this.col_sound.play();
+
+        if (promise !== undefined) {
+          promise.then(_ => {
+            // Autoplay started!
+          }).catch(error => {
+            // Autoplay was prevented.
+            // Show a "Play" button so that user can start playback.
+            console.log("autoplay prevented");
+          });
+        }
+
+
+      }
+      else{
+        this.score++;
+        this.scoreText.update(this.score);
+      }
+
+
+    });
+
+
+    return dead;
   };
+
+
+  displayRestart = () => {
+
+
+     this.restart.addEventListener('click', function(){
+      console.log("restart clicked");
+
+
+      location.reload();
+      return false;
+
+    });
+  }
 }
